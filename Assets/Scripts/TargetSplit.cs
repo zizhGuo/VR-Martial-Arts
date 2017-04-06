@@ -5,11 +5,12 @@ using UnityEngine;
 public class TargetSplit : MonoBehaviour
 {
     public GameObject target;
-    public GameObject left;
-    public GameObject right;
+    //public GameObject left;
+    //public GameObject right;
     public float forceToCut;
-    public float horizontalSwingGraceDistance;
-    public float bladeCutGraceAngle;
+    public float horizontalSwingGrace;
+    public float bladeCutAngleGrace;
+    public float horizontalDisplacementGrace;
 
     public bool isBlade;
     public bool isSwing;
@@ -56,29 +57,30 @@ public class TargetSplit : MonoBehaviour
 
             blade.cutCount++;
 
-            print("collide speed: " + blade.bladeVelocity + ", collide direction: " + Mathf.Abs(transform.up.x - col.transform.up.x) + ", cut# " + blade.cutCount);// + transform.up + ", " + col.transform.up);
+            print("collide speed: " + blade.bladeVelocity + ", collide direction: " + Mathf.Abs(transform.up.y - col.transform.up.y) + ", cut# " + blade.cutCount);// + transform.up + ", " + col.transform.up);
 
             isBlade = true;
 
             if (blade.bladeVelocity.y <= -forceToCut && 
                 //Mathf.Abs(blade.bladeVelocity.x) <= horizontalSwingGraceDistance && 
-                Mathf.Abs(blade.bladeVelocity.z) <= horizontalSwingGraceDistance)
+                Mathf.Abs(blade.bladeVelocity.z) <= horizontalSwingGrace)
             {
-                print("cut speed: " + blade.bladeVelocity + ", collide direction: " + Mathf.Abs(transform.up.x - col.transform.up.x) + ", cut# " + blade.cutCount);
+                print("cut speed: " + blade.bladeVelocity + ", collide direction: " + Mathf.Abs(transform.up.y - col.transform.up.y) + ", cut# " + blade.cutCount);
                 isSwing = true;
 
-                if(Mathf.Abs(transform.up.x - col.transform.up.x) <= bladeCutGraceAngle)
+                if(Mathf.Abs(transform.up.y - col.transform.up.y) <= bladeCutAngleGrace)
                 {
 
-                    print("cut direction: " + Mathf.Abs(transform.up.x - col.transform.up.x) + ", cut# " + blade.cutCount);
+                    print("cut direction: " + Mathf.Abs(transform.up.y - col.transform.up.y) + ", cut# " + blade.cutCount);
 
-                    split();
+                    //split();
 
                 }
             }
         }
     }
 
+    /*
     void split()
     {
         //ScoreCounter counter = FindObjectOfType<ScoreCounter>();
@@ -92,4 +94,5 @@ public class TargetSplit : MonoBehaviour
         Destroy(target, 5f);
         gameObject.SetActive(false);
     }
+    */
 }

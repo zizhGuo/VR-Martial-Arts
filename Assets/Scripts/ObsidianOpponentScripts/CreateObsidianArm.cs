@@ -14,6 +14,7 @@ public class CreateObsidianArm : MonoBehaviour
     public float minGeneratePositionOffset;
     public float maxGeneratePositionOffset;
     public float waitForDestroyTime;
+    public GameObject moveWrap;
 
     public float generateInterval;
     public GameObject obsidianLeader;
@@ -69,7 +70,7 @@ public class CreateObsidianArm : MonoBehaviour
 
         GameObject newObsidian = Instantiate(obsidianCube, new Vector3(generatePosi.x + ((betterRandom((int)(minGeneratePositionOffset * 1000f), (int)(maxGeneratePositionOffset * 1000f))) / 1000f),
                                                                        generatePosi.y + ((betterRandom((int)(minGeneratePositionOffset * 1000f), (int)(maxGeneratePositionOffset * 1000f))) / 1000f),
-                                                                       generatePosi.z + ((betterRandom((int)(minGeneratePositionOffset * 1000f), (int)(maxGeneratePositionOffset * 1000f))) / 1000f)), transform.rotation);
+                                                                       generatePosi.z + ((betterRandom((int)(minGeneratePositionOffset * 1000f), (int)(maxGeneratePositionOffset * 1000f))) / 1000f)), transform.rotation, moveWrap.transform);
         newObsidian.SetActive(false);
         newObsidian.transform.localScale = new Vector3((betterRandom((int)(minObsidianLength * 1000f), (int)(maxObsidianLength * 1000f))) / 1000f,
                                                        (betterRandom((int)(minObsidianLength * 1000f), (int)(maxObsidianLength * 1000f))) / 1000f,
@@ -78,6 +79,8 @@ public class CreateObsidianArm : MonoBehaviour
         newObsidian.GetComponentInChildren<CreateObsidianArm>().previousObsidian = transform.parent.gameObject;
         newObsidian.GetComponentInChildren<CreateObsidianArm>().attackStartTime = attackStartTime;
         newObsidian.GetComponentInChildren<CreateObsidianArm>().attackDuration = attackDuration;
+        newObsidian.GetComponentInChildren<CreateObsidianArm>().moveWrap = moveWrap;
+        newObsidian.GetComponentInChildren<ColliderScore>().move = GetComponentInParent<MoveRating>();
         newObsidian.SetActive(true);
         nextObsidian = newObsidian.gameObject;
         isFirstObsidian = false;

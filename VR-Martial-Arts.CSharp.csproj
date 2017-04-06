@@ -118,8 +118,13 @@
     <Compile Include="Assets\Scripts\PlayerScripts\PlayerPunchBehavior.cs" />
     <Compile Include="Assets\Scripts\PlayerScripts\PlayerShieldBehavior.cs" />
     <Compile Include="Assets\Scripts\PlayerScripts\PlayerShieldDetectObsidian.cs" />
+    <Compile Include="Assets\Scripts\Score\ColliderScore.cs" />
+    <Compile Include="Assets\Scripts\Score\GameScore.cs" />
+    <Compile Include="Assets\Scripts\Score\MoveRating.cs" />
+    <Compile Include="Assets\Scripts\Score\StanceRating.cs" />
     <Compile Include="Assets\Scripts\ScoreCounter.cs" />
     <Compile Include="Assets\Scripts\TargetSplit.cs" />
+    <Compile Include="Assets\Scripts\Test\TestCollideAngle.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_LaserPointer.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_Teleporter.cs" />
