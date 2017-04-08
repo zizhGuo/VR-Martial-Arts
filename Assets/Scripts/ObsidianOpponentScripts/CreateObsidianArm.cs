@@ -36,6 +36,11 @@ public class CreateObsidianArm : MonoBehaviour
         isCreatingObsidian = false;
         thisObsidianCube = transform.parent.gameObject;
         thisObsidianCubeRigidbody = thisObsidianCube.GetComponent<Rigidbody>();
+
+        if (moveWrap.GetComponent<MoveRating>().currentMoveTime == 0)
+        {
+            moveWrap.GetComponent<MoveRating>().currentMoveTime = Time.time;
+        }
     }
 	
 	// Update is called once per frame
@@ -82,6 +87,7 @@ public class CreateObsidianArm : MonoBehaviour
         newObsidian.GetComponentInChildren<CreateObsidianArm>().moveWrap = moveWrap;
         newObsidian.GetComponentInChildren<ColliderScore>().move = GetComponentInParent<MoveRating>();
         newObsidian.SetActive(true);
+        moveWrap.GetComponent<MoveRating>().totalColliderNumber += 1;
         nextObsidian = newObsidian.gameObject;
         isFirstObsidian = false;
         isCreatingObsidian = false;
