@@ -2,6 +2,14 @@
 
 public class BezierCurve : MonoBehaviour {
 
+    void update()
+    {
+        if(transform == null)
+        {
+            return;
+        }
+    }
+
 	public Vector3[] points;
 	
 	public Vector3 GetPoint (float t) {

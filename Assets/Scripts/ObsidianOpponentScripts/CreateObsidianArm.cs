@@ -37,10 +37,10 @@ public class CreateObsidianArm : MonoBehaviour
         thisObsidianCube = transform.parent.gameObject;
         thisObsidianCubeRigidbody = thisObsidianCube.GetComponent<Rigidbody>();
 
-        if (moveWrap.GetComponent<MoveRating>().currentMoveTime == 0)
-        {
-            moveWrap.GetComponent<MoveRating>().currentMoveTime = Time.time;
-        }
+        //if (moveWrap.GetComponent<MoveRating>().currentMoveTime == 0)
+        //{
+        //    moveWrap.GetComponent<MoveRating>().currentMoveTime = Time.time;
+        //}
     }
 	
 	// Update is called once per frame
@@ -52,7 +52,10 @@ public class CreateObsidianArm : MonoBehaviour
             //thisObsidianCube.GetComponent<Collider>().enabled = false;
         }
 
-        transform.LookAt(obsidianLeader.transform);
+        if (obsidianLeader != null)
+        {
+            transform.LookAt(obsidianLeader.transform);
+        }
 
         if(!isCreatingObsidian)
         {
@@ -71,7 +74,7 @@ public class CreateObsidianArm : MonoBehaviour
         yield return new WaitForSecondsRealtime(waitTime);
 
         Vector3 generatePosi = transform.position + transform.forward.normalized * generateDistance;
-        print(transform.forward.normalized * generateDistance);
+        //print(transform.forward.normalized * generateDistance);
 
         GameObject newObsidian = Instantiate(obsidianCube, new Vector3(generatePosi.x + ((betterRandom((int)(minGeneratePositionOffset * 1000f), (int)(maxGeneratePositionOffset * 1000f))) / 1000f),
                                                                        generatePosi.y + ((betterRandom((int)(minGeneratePositionOffset * 1000f), (int)(maxGeneratePositionOffset * 1000f))) / 1000f),
@@ -80,12 +83,20 @@ public class CreateObsidianArm : MonoBehaviour
         newObsidian.transform.localScale = new Vector3((betterRandom((int)(minObsidianLength * 1000f), (int)(maxObsidianLength * 1000f))) / 1000f,
                                                        (betterRandom((int)(minObsidianLength * 1000f), (int)(maxObsidianLength * 1000f))) / 1000f,
                                                        (betterRandom((int)(minObsidianLength * 1000f), (int)(maxObsidianLength * 1000f))) / 1000f);
-        newObsidian.GetComponentInChildren<CreateObsidianArm>().obsidianLeader = obsidianLeader;
-        newObsidian.GetComponentInChildren<CreateObsidianArm>().previousObsidian = transform.parent.gameObject;
-        newObsidian.GetComponentInChildren<CreateObsidianArm>().attackStartTime = attackStartTime;
-        newObsidian.GetComponentInChildren<CreateObsidianArm>().attackDuration = attackDuration;
-        newObsidian.GetComponentInChildren<CreateObsidianArm>().moveWrap = moveWrap;
+        CreateObsidianArm newObsidianCreator = newObsidian.GetComponentInChildren<CreateObsidianArm>();
+        newObsidianCreator.obsidianLeader = obsidianLeader;
+        newObsidianCreator.previousObsidian = transform.parent.gameObject;
+        newObsidianCreator.attackStartTime = attackStartTime;
+        newObsidianCreator.attackDuration = attackDuration;
+        newObsidianCreator.moveWrap = moveWrap;
         newObsidian.GetComponentInChildren<ColliderScore>().move = GetComponentInParent<MoveRating>();
+        newObsidianCreator.generateSpeed = generateSpeed;
+        newObsidianCreator.generateDistance = generateDistance;
+        newObsidianCreator.minObsidianLength = minObsidianLength;
+        newObsidianCreator.maxObsidianLength = maxObsidianLength;
+        newObsidianCreator.minGeneratePositionOffset = minGeneratePositionOffset;
+        newObsidianCreator.maxGeneratePositionOffset = maxGeneratePositionOffset;
+        newObsidianCreator.waitForDestroyTime = waitForDestroyTime;
         newObsidian.SetActive(true);
         moveWrap.GetComponent<MoveRating>().totalColliderNumber += 1;
         nextObsidian = newObsidian.gameObject;

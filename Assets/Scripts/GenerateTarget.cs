@@ -3,17 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GenerateTarget : MonoBehaviour
 {
     public GameObject target;
     public Transform player;
+    public Text scoreDisplay;
 
     public Quaternion shootDirection;
 	// Use this for initialization
 	void Start ()
     {
-        StartCoroutine(createTarget(3f));
+        StartCoroutine(createTarget(8f));
 	}
 	
 	// Update is called once per frame
@@ -28,11 +30,14 @@ public class GenerateTarget : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(interval);
+            yield return new WaitForSeconds(5f);
 
             GameObject newTarget = Instantiate(target, transform.position, shootDirection);
-            newTarget.GetComponent<Rigidbody>().AddForce(newTarget.transform.forward * 3f, ForceMode.Impulse);
-            Destroy(newTarget, 10f);
+            newTarget.GetComponent<StanceRating>().scoreDisplay = scoreDisplay;
+            //newTarget.GetComponent<Rigidbody>().AddForce(newTarget.transform.forward * 3f, ForceMode.Impulse);
+            Destroy(newTarget, 27f);
+
+            yield return new WaitForSeconds(interval);
         }
     }
 

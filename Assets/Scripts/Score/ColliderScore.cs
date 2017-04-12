@@ -13,7 +13,6 @@ public class ColliderScore : MonoBehaviour
     public float bladeCutAngleGrace;
     public float horizontalDisplacementGrace;
     public float horizontalMaxAllowDisplacement;
-    public float timingGrace;
 
     public bool isBlade;
     public bool isSwing;
@@ -27,8 +26,6 @@ public class ColliderScore : MonoBehaviour
     public float cutDisplacementRating;
     public float cutForceRating;
     public float cutHorizontalSwingRating;
-    public float currentMoveTime;
-    public float cutTimingRating;
 
     void Awake()
     {
@@ -66,14 +63,13 @@ public class ColliderScore : MonoBehaviour
 
         if (col.transform.name == "BladeEdgeA" || col.transform.name == "BladeEdgeB")
         {
-            print(col.transform.name + ", isBlade: " + isBlade + ", transform collider: " + transform.up + ", transform blade: " + col.transform.up);
 
             BladeLogic blade = col.GetComponent<BladeLogic>();
             
-            foreach (ContactPoint contact in collision.contacts)
-            {
-                Debug.DrawRay(contact.point, contact.normal, Color.white);
-            }
+            //foreach (ContactPoint contact in collision.contacts)
+            //{
+            //    Debug.DrawRay(contact.point, contact.normal, Color.white);
+            //}
 
             if(isBlade)
             {
@@ -81,6 +77,7 @@ public class ColliderScore : MonoBehaviour
             }
 
             isBlade = true;
+            //print("blade edge: " + col.transform.name + ", Move Index:" + move.moveIndex + ", collider rotation: " + transform.up + ", blade rotation: " + col.transform.up);
 
             cutForce = Mathf.Abs(blade.bladeVelocity.y);
             cutForceRating = cutForce / forceToCut;
@@ -93,14 +90,30 @@ public class ColliderScore : MonoBehaviour
                 cutForceRating = 0;
             }
 
-            if (Mathf.Abs(transform.up.z - col.transform.up.z) <= 1)
+            if (Mathf.Abs(transform.up.y) > 0.5f)
             {
-                cutAngle = Mathf.Abs(transform.up.x - col.transform.up.x);
+                if (Mathf.Abs(transform.up.y - col.transform.up.y) <= 1)
+                {
+                    cutAngle = Mathf.Abs(Mathf.Abs(transform.up.x) - Mathf.Abs(col.transform.up.x));
+                }
+                else
+                {
+                    cutAngle = 2f - Mathf.Abs(Mathf.Abs(transform.up.x) - Mathf.Abs(col.transform.up.x));
+                }
             }
             else
             {
-                cutAngle = 2f - Mathf.Abs(transform.up.x - col.transform.up.x);
+                if (Mathf.Abs(transform.up.x - col.transform.up.x) <= 1)
+                {
+                    cutAngle = Mathf.Abs(Mathf.Abs(transform.up.y) - Mathf.Abs(col.transform.up.y));
+                }
+                else
+                {
+                    cutAngle = 2f - Mathf.Abs(Mathf.Abs(transform.up.y) - Mathf.Abs(col.transform.up.y));
+                }
             }
+
+            //cutAngle = Mathf.Abs(transform.up.x - col.transform.up.x);
             cutAngleRating = (2f - (cutAngle - bladeCutAngleGrace)) / (2f - bladeCutAngleGrace);
             if(cutAngleRating > 1)
             {
@@ -119,20 +132,31 @@ public class ColliderScore : MonoBehaviour
             }
             
             cutDisplacement = Vector3.Distance(collision.contacts[0].point, transform.position);
-            print("Distance: " + cutDisplacement);
+            //print("Distance: " + cutDisplacement);
             cutDisplacementRating = (horizontalMaxAllowDisplacement - (cutDisplacement - horizontalDisplacementGrace)) / (horizontalMaxAllowDisplacement - horizontalDisplacementGrace);
             if (cutDisplacementRating > 1)
             {
                 cutDisplacementRating = 1;
             }
+            if (cutAngleRating < 0)
+            {
+                cutAngleRating = 0;
+            }
 
-            move.angleRating = cutAngleRating;
-            move.forceRating = cutForceRating;
-            move.swingRating = cutHorizontalSwingRating;
-            move.displacementRating = cutDisplacementRating;
-            move.timingRating = cutTimingRating;
+            if (move.currentCutTime == -1)
+            {
+                move.currentCutTime = Time.time;
+            }
 
-            print("Angle rating: " + cutAngleRating + ", Force rating: " + cutForceRating + ", Swing rating: " + cutHorizontalSwingRating + ", Displacement rating" + cutDisplacementRating);
+            move.angleRating += cutAngleRating;
+            move.forceRating += cutForceRating;
+            move.swingRating += cutHorizontalSwingRating;
+            move.displacementRating += cutDisplacementRating;
+            move.hitColliderNumber++;
+
+            Destroy(gameObject);
+
+            //print("Angle rating: " + cutAngleRating + ", Force rating: " + cutForceRating + ", Swing rating: " + cutHorizontalSwingRating + ", Displacement rating" + cutDisplacementRating);
         }
     }
 }

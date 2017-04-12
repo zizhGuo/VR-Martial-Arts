@@ -16,6 +16,11 @@ public class BezierWalker : MonoBehaviour
 
     private void Update()
     {
+        if(spline == null)
+        {
+            Destroy(gameObject);
+        }
+
         if (goingForward)
         {
             progress += Time.deltaTime / duration;

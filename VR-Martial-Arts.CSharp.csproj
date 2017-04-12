@@ -92,6 +92,7 @@
     <Compile Include="Assets\BezierWalker\SplineWalkerMode.cs" />
     <Compile Include="Assets\Scripts\BladeLogic.cs" />
     <Compile Include="Assets\Scripts\ControllerInteraction\BasicHandInteraction.cs" />
+    <Compile Include="Assets\Scripts\CreateStance.cs" />
     <Compile Include="Assets\Scripts\DestroyObsidianCube.cs" />
     <Compile Include="Assets\Scripts\DummyBezier.cs" />
     <Compile Include="Assets\Scripts\GenerateTarget.cs" />
