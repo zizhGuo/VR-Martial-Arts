@@ -1,13 +1,13 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VR-Martial-Arts.CSharp.Plugins", "VR-Martial-Arts.CSharp.Plugins.csproj", "{48F0B66C-C533-2514-936F-ACBF02511203}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{19DEBFBE-F26A-47AA-E47A-A1270A865B8F}") = "VR-Martial-Arts", "Assembly-CSharp-firstpass.csproj", "{4ED42936-B8F0-DA4C-2069-0E31C846771F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VR-Martial-Arts.CSharp", "VR-Martial-Arts.CSharp.csproj", "{8DD2AFD7-DA82-2067-3ECF-AED302C87BAA}"
+Project("{19DEBFBE-F26A-47AA-E47A-A1270A865B8F}") = "VR-Martial-Arts", "Assembly-CSharp.csproj", "{2D7685FF-44FC-0B0A-235E-F619A4C7370A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VR-Martial-Arts.CSharp.Editor.Plugins", "VR-Martial-Arts.CSharp.Editor.Plugins.csproj", "{D78D7C28-9B62-1E54-F5CC-05ED247081AB}"
+Project("{19DEBFBE-F26A-47AA-E47A-A1270A865B8F}") = "VR-Martial-Arts", "Assembly-CSharp-Editor-firstpass.csproj", "{C811EF77-F57D-1A44-6DE5-D607A91E65E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VR-Martial-Arts.CSharp.Editor", "VR-Martial-Arts.CSharp.Editor.csproj", "{5601CEA0-D852-6E45-1FB9-447467017F44}"
+Project("{19DEBFBE-F26A-47AA-E47A-A1270A865B8F}") = "VR-Martial-Arts", "Assembly-CSharp-Editor.csproj", "{3EF575D2-F1BE-92E3-B79B-4ACD8766595F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,24 +15,27 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{48F0B66C-C533-2514-936F-ACBF02511203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48F0B66C-C533-2514-936F-ACBF02511203}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48F0B66C-C533-2514-936F-ACBF02511203}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48F0B66C-C533-2514-936F-ACBF02511203}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8DD2AFD7-DA82-2067-3ECF-AED302C87BAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8DD2AFD7-DA82-2067-3ECF-AED302C87BAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8DD2AFD7-DA82-2067-3ECF-AED302C87BAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8DD2AFD7-DA82-2067-3ECF-AED302C87BAA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D78D7C28-9B62-1E54-F5CC-05ED247081AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D78D7C28-9B62-1E54-F5CC-05ED247081AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D78D7C28-9B62-1E54-F5CC-05ED247081AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D78D7C28-9B62-1E54-F5CC-05ED247081AB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5601CEA0-D852-6E45-1FB9-447467017F44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5601CEA0-D852-6E45-1FB9-447467017F44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5601CEA0-D852-6E45-1FB9-447467017F44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5601CEA0-D852-6E45-1FB9-447467017F44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4ED42936-B8F0-DA4C-2069-0E31C846771F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ED42936-B8F0-DA4C-2069-0E31C846771F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ED42936-B8F0-DA4C-2069-0E31C846771F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ED42936-B8F0-DA4C-2069-0E31C846771F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D7685FF-44FC-0B0A-235E-F619A4C7370A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D7685FF-44FC-0B0A-235E-F619A4C7370A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D7685FF-44FC-0B0A-235E-F619A4C7370A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D7685FF-44FC-0B0A-235E-F619A4C7370A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C811EF77-F57D-1A44-6DE5-D607A91E65E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C811EF77-F57D-1A44-6DE5-D607A91E65E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C811EF77-F57D-1A44-6DE5-D607A91E65E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C811EF77-F57D-1A44-6DE5-D607A91E65E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EF575D2-F1BE-92E3-B79B-4ACD8766595F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF575D2-F1BE-92E3-B79B-4ACD8766595F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EF575D2-F1BE-92E3-B79B-4ACD8766595F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EF575D2-F1BE-92E3-B79B-4ACD8766595F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
 	EndGlobalSection
 EndGlobal
