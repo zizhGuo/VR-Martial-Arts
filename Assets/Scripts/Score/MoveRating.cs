@@ -44,9 +44,21 @@ public class MoveRating : MonoBehaviour
 	void Start ()
     {
         path = GetComponentInChildren<BezierCurve>().gameObject;
+        //Quaternion cutDirection = path.transform.rotation;
+        //cutDirection.eulerAngles = new Vector3(betterRandom(0, 360), cutDirection.eulerAngles.y, cutDirection.eulerAngles.z);
+
+        ///For testing
+        //cutDirection.eulerAngles = new Vector3(betterRandom(0, 360), cutDirection.eulerAngles.y, -90);
+        transform.LookAt(FindObjectOfType<SteamVR_Camera>().transform);
+        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+
+        path.transform.LookAt(FindObjectOfType<SteamVR_Camera>().transform);
         Quaternion cutDirection = path.transform.rotation;
-        cutDirection.eulerAngles = new Vector3(betterRandom(0, 360), cutDirection.eulerAngles.y, cutDirection.eulerAngles.z);
+        cutDirection.eulerAngles = new Vector3(betterRandom(0, 360), cutDirection.eulerAngles.y - 90f, 0);
         path.transform.rotation = cutDirection;
+        ///For testing
+
+        //path.transform.rotation = cutDirection;
         path.GetComponent<BezierCurve>().points[1].y = path.GetComponent<BezierCurve>().points[2].y =
             (betterRandom(-40, 40) / 100f);
         //path.GetComponent<BezierCurve>().points[1].y = path.GetComponent<BezierCurve>().points[2].y = 0;
@@ -89,11 +101,17 @@ public class MoveRating : MonoBehaviour
             Destroy(leader);
         }
 
-        newPosition = transform.position;
-        newPosition.z -= moveSpeed * Time.deltaTime;
-        transform.position = newPosition;
+        //newPosition = transform.position;
+        //newPosition.z -= moveSpeed * Time.deltaTime;
+        //transform.position = newPosition;
 
-        if(currentMoveTime != 0 && currentCutTime != -1)
+        ///Testing
+        newPosition = transform.position;
+        newPosition += transform.forward * moveSpeed * Time.deltaTime;
+        transform.position = newPosition;
+        ///Testing
+
+        if (currentMoveTime != 0 && currentCutTime != -1)
         {
             currentTimeError = Mathf.Abs(currentCutTime - currentMoveTime);
             timingRating = (maxAllowTimingError - (currentTimeError - timingGrace)) / (maxAllowTimingError - timingGrace);
@@ -109,19 +127,56 @@ public class MoveRating : MonoBehaviour
             }
         }
 
+        timingRating *= totalColliderNumber;
+
         totalMoveRating = (anglePercent * angleRating +
                           forcePercent * forceRating +
                           swingPercent * swingRating +
                           timingPercent * timingRating +
                           displacementPercent * displacementRating) / totalColliderNumber;
 
-        if(angleRating / totalColliderNumber <= minFactorRating ||
-            forceRating / totalColliderNumber <= minFactorRating ||
-            swingRating / totalColliderNumber <= minFactorRating ||
-            timingRating <= minFactorRating ||
-            displacementRating / totalColliderNumber <= minFactorRating)
+        //if(angleRating / totalColliderNumber <= minFactorRating ||
+        //    forceRating / totalColliderNumber <= minFactorRating ||
+        //    swingRating / totalColliderNumber <= minFactorRating ||
+        //    timingRating <= minFactorRating ||
+        //    displacementRating / totalColliderNumber <= minFactorRating)
+        //{
+        //    totalMoveRating = 0;
+        //}
+
+        //Adjust the rating to player's lowest factor (If a player perform bad in anyone of the rating factors, the total rating will suffer a lot)
+        float lowestFactorRating = totalColliderNumber;
+
+        if(angleRating < lowestFactorRating)
         {
-            totalMoveRating = 0;
+            lowestFactorRating = angleRating;
+        }
+        if(forceRating < lowestFactorRating)
+        {
+            lowestFactorRating = forceRating;
+        }
+        if(swingRating < lowestFactorRating)
+        {
+            lowestFactorRating = swingRating;
+        }
+        if(timingRating < lowestFactorRating)
+        {
+            lowestFactorRating = timingRating;
+        }
+        if(displacementRating < lowestFactorRating)
+        {
+            lowestFactorRating = displacementRating;
+        }
+
+        if (lowestFactorRating / totalColliderNumber <= minFactorRating)
+        {
+            lowestFactorRating /= hitColliderNumber;
+            totalMoveRating *= Mathf.Pow(lowestFactorRating, 2f);
+        }
+        else
+        {
+            lowestFactorRating /= hitColliderNumber;
+            totalMoveRating *= Mathf.Pow(lowestFactorRating, 0.5f);
         }
 
             if (Time.time > currentMoveTime + maxAllowTimingError && !hasSendScore && currentCutTime != -1 && currentMoveTime != 0)

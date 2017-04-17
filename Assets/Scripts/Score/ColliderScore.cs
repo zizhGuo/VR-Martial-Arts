@@ -77,7 +77,7 @@ public class ColliderScore : MonoBehaviour
             }
 
             isBlade = true;
-            //print("blade edge: " + col.transform.name + ", Move Index:" + move.moveIndex + ", collider rotation: " + transform.up + ", blade rotation: " + col.transform.up);
+            print("blade edge: " + col.transform.name + ", Move Index:" + move.moveIndex + ", collider rotation: " + transform.up + ", blade rotation: " + col.transform.up);
 
             cutForce = Mathf.Abs(blade.bladeVelocity.y);
             cutForceRating = cutForce / forceToCut;

@@ -64,7 +64,14 @@ public class CreateStance : MonoBehaviour
     {
         for(int i = 0; i < moveNumber; i++)
         {
-            currentMove = Instantiate(move, transform.position, moveRotation, transform);
+            //currentMove = Instantiate(move, transform.position, moveRotation, transform);
+
+            ///For testing
+            Quaternion moveR = new Quaternion();
+            moveR.eulerAngles = transform.right;
+            currentMove = Instantiate(move, transform.position, moveR, transform);
+            ///For testing
+            
             MoveRating currentRating = currentMove.GetComponent<MoveRating>();
 
             if(i != 0) //If this is not the first move in this stance, we can assgin previous move to its previousMove, and assign current move to previous move's nextMove
