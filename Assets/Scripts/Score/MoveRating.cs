@@ -55,6 +55,7 @@ public class MoveRating : MonoBehaviour
         path.transform.LookAt(FindObjectOfType<SteamVR_Camera>().transform);
         Quaternion cutDirection = path.transform.rotation;
         cutDirection.eulerAngles = new Vector3(betterRandom(0, 360), cutDirection.eulerAngles.y - 90f, 0);
+        //cutDirection.eulerAngles = new Vector3(225, cutDirection.eulerAngles.y - 90f, 0);
         path.transform.rotation = cutDirection;
         ///For testing
 

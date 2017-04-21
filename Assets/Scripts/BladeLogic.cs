@@ -7,6 +7,8 @@ public class BladeLogic : MonoBehaviour
     //public int bladeRayCount;
     //public float bladeRaySpacing;
     //public float bladeRayLength;
+    public Transform speedMeter;
+    public Rigidbody bladeRigid;
 
     public Vector3 originalPosition;
     public Quaternion originalRotation;
@@ -29,29 +31,30 @@ public class BladeLogic : MonoBehaviour
     {
         //bounds = GetComponent<Collider>().bounds;
 
-        oldPosition = transform.position;
+        oldPosition = speedMeter.position;
         cutCount = 0;
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        transform.localPosition = originalPosition;
-        transform.localRotation = originalRotation;
+        //transform.localPosition = originalPosition;
+        //transform.localRotation = originalRotation;
 
+
+        newPosition = speedMeter.position;
+        bladeDisplacement = (newPosition - oldPosition);
+        bladeVelocity = bladeDisplacement / Time.deltaTime;
+        bladeVelocity = transform.InverseTransformDirection(bladeVelocity);
+        //bladeVelocity *= 10000000;
+        oldPosition = newPosition;
+        newPosition = transform.position;
 
     }
 
 
     void FixedUpdate()
     {
-
-        newPosition = transform.position;
-        bladeDisplacement = (newPosition - oldPosition);
-        bladeVelocity = bladeDisplacement / Time.deltaTime;
-        bladeVelocity = transform.InverseTransformDirection(bladeVelocity);
-        oldPosition = newPosition;
-        newPosition = transform.position;
 
     }
 

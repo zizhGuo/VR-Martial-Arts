@@ -26,6 +26,8 @@ public class CreateObsidianArm : MonoBehaviour
     public float attackDuration;
     public GameObject thisObsidianCube;
     public Rigidbody thisObsidianCubeRigidbody;
+    //public Quaternion newObsidianRotation;
+    public Vector3 newObsidianEuler;
 
     // Use this for initialization
     void Start ()
@@ -83,6 +85,16 @@ public class CreateObsidianArm : MonoBehaviour
         newObsidian.transform.localScale = new Vector3((betterRandom((int)(minObsidianLength * 1000f), (int)(maxObsidianLength * 1000f))) / 1000f,
                                                        (betterRandom((int)(minObsidianLength * 1000f), (int)(maxObsidianLength * 1000f))) / 1000f,
                                                        (betterRandom((int)(minObsidianLength * 1000f), (int)(maxObsidianLength * 1000f))) / 1000f);
+        newObsidianEuler = newObsidian.transform.localEulerAngles;
+        if (0 < newObsidianEuler.y && newObsidianEuler.y < 180f)
+        {
+            newObsidianEuler.y = 90f;
+        }
+        else
+        {
+            newObsidianEuler.y = 270f;
+        }
+        newObsidian.transform.localEulerAngles = newObsidianEuler;
         CreateObsidianArm newObsidianCreator = newObsidian.GetComponentInChildren<CreateObsidianArm>();
         newObsidianCreator.obsidianLeader = obsidianLeader;
         newObsidianCreator.previousObsidian = transform.parent.gameObject;

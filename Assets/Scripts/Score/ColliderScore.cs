@@ -77,7 +77,7 @@ public class ColliderScore : MonoBehaviour
             }
 
             isBlade = true;
-            print("blade edge: " + col.transform.name + ", Move Index:" + move.moveIndex + ", collider rotation: " + transform.up + ", blade rotation: " + col.transform.up);
+            print("blade edge: " + col.transform.name + ", Move Index:" + move.moveIndex + ", collider rotation: " + transform.up + ", blade rotation: " + col.transform.up + ", blade velocity: " + blade.bladeVelocity);
 
             cutForce = Mathf.Abs(blade.bladeVelocity.y);
             cutForceRating = cutForce / forceToCut;
@@ -124,13 +124,17 @@ public class ColliderScore : MonoBehaviour
                 cutAngleRating = 0;
             }
 
-            cutHorizontalSwing = Mathf.Abs(blade.bladeVelocity.z);
+            cutHorizontalSwing = Mathf.Abs(blade.bladeVelocity.x);
             cutHorizontalSwingRating = (horizontalMaxAllowSwing - (cutHorizontalSwing - horizontalSwingGrace)) / (horizontalMaxAllowSwing - horizontalSwingGrace);
             if (cutHorizontalSwingRating > 1)
             {
                 cutHorizontalSwingRating = 1;
             }
-            
+            if (cutHorizontalSwingRating < 0)
+            {
+                cutHorizontalSwingRating = 0;
+            }
+
             cutDisplacement = Vector3.Distance(collision.contacts[0].point, transform.position);
             //print("Distance: " + cutDisplacement);
             cutDisplacementRating = (horizontalMaxAllowDisplacement - (cutDisplacement - horizontalDisplacementGrace)) / (horizontalMaxAllowDisplacement - horizontalDisplacementGrace);
