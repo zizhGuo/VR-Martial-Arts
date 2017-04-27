@@ -39,9 +39,9 @@ public class CreateObsidianArm : MonoBehaviour
         thisObsidianCube = transform.parent.gameObject;
         thisObsidianCubeRigidbody = thisObsidianCube.GetComponent<Rigidbody>();
 
-        //if (moveWrap.GetComponent<MoveRating>().currentMoveTime == 0)
+        //if (moveWrap.GetComponent<StartMove>().currentMoveTime == 0)
         //{
-        //    moveWrap.GetComponent<MoveRating>().currentMoveTime = Time.time;
+        //    moveWrap.GetComponent<StartMove>().currentMoveTime = Time.time;
         //}
     }
 	
@@ -86,13 +86,14 @@ public class CreateObsidianArm : MonoBehaviour
                                                        (betterRandom((int)(minObsidianLength * 1000f), (int)(maxObsidianLength * 1000f))) / 1000f,
                                                        (betterRandom((int)(minObsidianLength * 1000f), (int)(maxObsidianLength * 1000f))) / 1000f);
         newObsidianEuler = newObsidian.transform.localEulerAngles;
-        if (0 < newObsidianEuler.y && newObsidianEuler.y < 180f)
+        //if (0 < newObsidianEuler.y && newObsidianEuler.y < 180f)
         {
-            newObsidianEuler.y = 90f;
+            newObsidianEuler.y = moveWrap.GetComponent<StartMove>().path.transform.localEulerAngles.y;
+            newObsidianEuler.z = moveWrap.GetComponent<StartMove>().path.transform.localEulerAngles.z + moveWrap.GetComponent<StartMove>().manualZ;
         }
-        else
+        //else
         {
-            newObsidianEuler.y = 270f;
+            //newObsidianEuler.y = 270f;
         }
         newObsidian.transform.localEulerAngles = newObsidianEuler;
         CreateObsidianArm newObsidianCreator = newObsidian.GetComponentInChildren<CreateObsidianArm>();
@@ -101,7 +102,7 @@ public class CreateObsidianArm : MonoBehaviour
         newObsidianCreator.attackStartTime = attackStartTime;
         newObsidianCreator.attackDuration = attackDuration;
         newObsidianCreator.moveWrap = moveWrap;
-        newObsidian.GetComponentInChildren<ColliderScore>().move = GetComponentInParent<MoveRating>();
+        newObsidian.GetComponentInChildren<ColliderScore>().move = GetComponentInParent<StartMove>();
         newObsidianCreator.generateSpeed = generateSpeed;
         newObsidianCreator.generateDistance = generateDistance;
         newObsidianCreator.minObsidianLength = minObsidianLength;
@@ -110,7 +111,7 @@ public class CreateObsidianArm : MonoBehaviour
         newObsidianCreator.maxGeneratePositionOffset = maxGeneratePositionOffset;
         newObsidianCreator.waitForDestroyTime = waitForDestroyTime;
         newObsidian.SetActive(true);
-        moveWrap.GetComponent<MoveRating>().totalColliderNumber += 1;
+        moveWrap.GetComponent<StartMove>().totalColliderNumber += 1;
         nextObsidian = newObsidian.gameObject;
         isFirstObsidian = false;
         isCreatingObsidian = false;

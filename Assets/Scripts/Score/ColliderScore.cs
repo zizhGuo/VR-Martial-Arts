@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ColliderScore : MonoBehaviour
 {
-    public MoveRating move;
+    public StartMove move;
     //public GameObject left;
     //public GameObject right;
     public float forceToCut;

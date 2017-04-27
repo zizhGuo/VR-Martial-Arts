@@ -23,7 +23,7 @@ public class GenerateTarget : MonoBehaviour
     {
         transform.LookAt(player);
         shootDirection = transform.rotation;
-        shootDirection.eulerAngles = new Vector3(shootDirection.eulerAngles.x, shootDirection.eulerAngles.y, betterRandom(90, -90));
+        shootDirection.eulerAngles = new Vector3(0, shootDirection.eulerAngles.y, 0);
 	}
 
     IEnumerator createTarget(float interval)
@@ -35,7 +35,7 @@ public class GenerateTarget : MonoBehaviour
             GameObject newTarget = Instantiate(target, transform.position, shootDirection);
             newTarget.GetComponent<StanceRating>().scoreDisplay = scoreDisplay;
             //newTarget.GetComponent<Rigidbody>().AddForce(newTarget.transform.forward * 3f, ForceMode.Impulse);
-            Destroy(newTarget, 27f);
+            Destroy(newTarget, 30f);
 
             yield return new WaitForSeconds(interval);
         }
