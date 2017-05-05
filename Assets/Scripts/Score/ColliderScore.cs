@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VRTK;
 
 public class ColliderScore : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class ColliderScore : MonoBehaviour
     public float bladeCutAngleGrace;
     public float horizontalDisplacementGrace;
     public float horizontalMaxAllowDisplacement;
+    public VRTK_ControllerActions controllerAction;
 
     public bool isBlade;
     public bool isSwing;
@@ -36,6 +38,7 @@ public class ColliderScore : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        controllerAction = FindObjectOfType<VRTK_ControllerActions>();
         isBlade = false;
         isSwing = false;
     }
@@ -80,6 +83,10 @@ public class ColliderScore : MonoBehaviour
             print("blade edge: " + col.transform.name + ", Move Index:" + move.moveIndex + ", collider rotation: " + transform.up + ", blade rotation: " + col.transform.up + ", blade velocity: " + blade.bladeVelocity);
 
             cutForce = Mathf.Abs(blade.bladeVelocity.y);
+
+            controllerAction.TriggerHapticPulse(cutForce / 20f, 0.1f, 0.01f);
+            //controllerAction.TriggerHapticPulse(0.5f, 0.5f, 0.01f);
+
             cutForceRating = cutForce / forceToCut;
             if (cutForceRating > 1)
             {
