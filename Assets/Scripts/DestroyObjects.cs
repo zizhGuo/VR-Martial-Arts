@@ -19,7 +19,7 @@ public class DestroyObjects : MonoBehaviour
 
     public void OnTriggerExit(Collider col)
     {
-        print(col.name);
+        //print(col.name);
         if(col.tag == "stanceDestroy")
         {
             Destroy(col.gameObject);

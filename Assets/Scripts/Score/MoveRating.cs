@@ -180,7 +180,7 @@ public class MoveRating : MonoBehaviour
             totalMoveRating *= Mathf.Pow(lowestFactorRating, 0.5f);
         }
 
-            if (Time.time > currentMoveTime + maxAllowTimingError && !hasSendScore && currentCutTime != -1 && currentMoveTime != 0)
+        if (Time.time > currentMoveTime + maxAllowTimingError && !hasSendScore && currentCutTime != -1 && currentMoveTime != 0)
         {
             hasSendScore = true;
             //print("MoveRating: " + moveIndex + ", " + totalMoveRating + ", Time: " + Time.time + ", move time:" + currentMoveTime);
