@@ -182,18 +182,18 @@ public class StartMove : MonoBehaviour
                 factorType = 5;
             }
 
-            if (lowestFactorRating / totalColliderNumber <= minFactorRating) //doing bad
-            {
-                lowestFactorRating /= hitColliderNumber;
-                totalMoveRating *= Mathf.Pow(lowestFactorRating, 2f);
-                //print("AAA");
-            }
-            else //doing good
-            {
-                lowestFactorRating /= hitColliderNumber;
-                totalMoveRating *= Mathf.Pow(lowestFactorRating, 0.5f);
-                //print("BBB");
-            }
+            //if (lowestFactorRating / totalColliderNumber <= minFactorRating) //doing bad
+            //{
+            //    lowestFactorRating /= hitColliderNumber;
+            //    totalMoveRating *= Mathf.Pow(lowestFactorRating, 2f);
+            //    //print("AAA");
+            //}
+            //else //doing good
+            //{
+            //    lowestFactorRating /= hitColliderNumber;
+            //    totalMoveRating *= Mathf.Pow(lowestFactorRating, 0.5f);
+            //    //print("BBB");
+            //}
 
             hasChangeColor = true;
             GameObject markToChangeColor = null;
