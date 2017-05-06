@@ -8,6 +8,7 @@ public class StanceRating : MonoBehaviour
     public float rating;
     public string letterRating;
     public Text scoreDisplay;
+    public Text performanceResponse;
 
     public float scoreForS;
     public float scoreForA;
@@ -17,12 +18,13 @@ public class StanceRating : MonoBehaviour
     public float scoreForF;
 
     public int moveCount;
+    public int stanceIndex;
 
 	// Use this for initialization
 	void Start ()
     {
         rating = 0;
-	}
+    }
 	
 	// Update is called once per frame
 	void Update ()

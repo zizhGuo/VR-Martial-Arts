@@ -15,6 +15,7 @@ public class ColliderScore : MonoBehaviour
     public float horizontalDisplacementGrace;
     public float horizontalMaxAllowDisplacement;
     public VRTK_ControllerActions controllerAction;
+    public GameScore gameManager;
 
     public bool isBlade;
     public bool isSwing;
@@ -39,6 +40,7 @@ public class ColliderScore : MonoBehaviour
     void Start()
     {
         controllerAction = FindObjectOfType<VRTK_ControllerActions>();
+        gameManager = FindObjectOfType<GameScore>();
         isBlade = false;
         isSwing = false;
     }
@@ -79,8 +81,14 @@ public class ColliderScore : MonoBehaviour
                 return;
             }
 
+            if(move.inkDraw.color == Color.black)
+            {
+                move.inkDraw.color = Color.red;
+                gameManager.moveIndex = move.moveIndex + 1;
+            }
+
             isBlade = true;
-            print("blade edge: " + col.transform.name + ", Move Index:" + move.moveIndex + ", collider rotation: " + transform.up + ", blade rotation: " + col.transform.up + ", blade velocity: " + blade.bladeVelocity);
+            //print("blade edge: " + col.transform.name + ", Move Index:" + move.moveIndex + ", collider rotation: " + transform.up + ", blade rotation: " + col.transform.up + ", blade velocity: " + blade.bladeVelocity);
 
             cutForce = Mathf.Abs(blade.bladeVelocity.y);
 

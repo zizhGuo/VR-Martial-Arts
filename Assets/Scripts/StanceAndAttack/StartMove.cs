@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StartMove : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class StartMove : MonoBehaviour
     public float minFactorRating; //A scale from 0 - 1, any of the five factors received a percentage score lower than this will result in a 0 in the total rating of this move.
     public float manualZ; //Custom local Z rotation for the colliders
     public float leaderTime;
+    public SpriteRenderer inkDraw;
+    public GameScore gameManager;
 
     public float angleRating;
     public float forceRating;
@@ -40,6 +43,8 @@ public class StartMove : MonoBehaviour
     public float moveInterval;
     public bool hasSendScore;
     public float originalEulerY;
+    public int factorType;
+    public bool hasChangeColor;
 
     // Use this for initialization
     void Start()
@@ -69,6 +74,10 @@ public class StartMove : MonoBehaviour
         currentMoveTime = 0;
 
         transform.localEulerAngles = new Vector3(0, 0, 0);
+
+        factorType = 0;
+        gameManager = FindObjectOfType<GameScore>();
+        hasChangeColor = false;
     }
 
     // Update is called once per frame
@@ -124,64 +133,136 @@ public class StartMove : MonoBehaviour
             }
         }
 
-        timingRating *= totalColliderNumber;
 
-        totalMoveRating = (anglePercent * angleRating +
-                          forcePercent * forceRating +
-                          swingPercent * swingRating +
-                          timingPercent * timingRating +
-                          displacementPercent * displacementRating) / totalColliderNumber;
+        if(currentCutTime != -1 && Time.time - currentCutTime > 1 && !hasChangeColor)
+        {
+            timingRating *= totalColliderNumber;
 
-        //if(angleRating / totalColliderNumber <= minFactorRating ||
-        //    forceRating / totalColliderNumber <= minFactorRating ||
-        //    swingRating / totalColliderNumber <= minFactorRating ||
-        //    timingRating <= minFactorRating ||
-        //    displacementRating / totalColliderNumber <= minFactorRating)
-        //{
-        //    totalMoveRating = 0;
-        //}
+            totalMoveRating = (anglePercent * angleRating +
+                              forcePercent * forceRating +
+                              swingPercent * swingRating +
+                              timingPercent * timingRating +
+                              displacementPercent * displacementRating) / totalColliderNumber;
 
-        //Adjust the rating to player's lowest factor (If a player perform bad in anyone of the rating factors, the total rating will suffer a lot)
-        float lowestFactorRating = totalColliderNumber;
+            //if(angleRating / totalColliderNumber <= minFactorRating ||
+            //    forceRating / totalColliderNumber <= minFactorRating ||
+            //    swingRating / totalColliderNumber <= minFactorRating ||
+            //    timingRating <= minFactorRating ||
+            //    displacementRating / totalColliderNumber <= minFactorRating)
+            //{
+            //    totalMoveRating = 0;
+            //}
 
-        if (angleRating < lowestFactorRating)
-        {
-            lowestFactorRating = angleRating;
-        }
-        if (forceRating < lowestFactorRating)
-        {
-            lowestFactorRating = forceRating;
-        }
-        if (swingRating < lowestFactorRating)
-        {
-            lowestFactorRating = swingRating;
-        }
-        if (timingRating < lowestFactorRating)
-        {
-            lowestFactorRating = timingRating;
-        }
-        if (displacementRating < lowestFactorRating)
-        {
-            lowestFactorRating = displacementRating;
-        }
+            //Adjust the rating to player's lowest factor (If a player perform bad in anyone of the rating factors, the total rating will suffer a lot)
+            float lowestFactorRating = totalColliderNumber;
 
-        if (lowestFactorRating / totalColliderNumber <= minFactorRating)
-        {
-            lowestFactorRating /= hitColliderNumber;
-            totalMoveRating *= Mathf.Pow(lowestFactorRating, 2f);
-        }
-        else
-        {
-            lowestFactorRating /= hitColliderNumber;
-            totalMoveRating *= Mathf.Pow(lowestFactorRating, 0.5f);
+            if (angleRating < lowestFactorRating)
+            {
+                lowestFactorRating = angleRating;
+                factorType = 1;
+            }
+            if (forceRating < lowestFactorRating)
+            {
+                lowestFactorRating = forceRating;
+                factorType = 2;
+            }
+            if (swingRating < lowestFactorRating)
+            {
+                lowestFactorRating = swingRating;
+                factorType = 3;
+            }
+            if (timingRating < lowestFactorRating)
+            {
+                lowestFactorRating = timingRating;
+                factorType = 4;
+            }
+            if (displacementRating < lowestFactorRating)
+            {
+                lowestFactorRating = displacementRating;
+                factorType = 5;
+            }
+
+            if (lowestFactorRating / totalColliderNumber <= minFactorRating) //doing bad
+            {
+                lowestFactorRating /= hitColliderNumber;
+                totalMoveRating *= Mathf.Pow(lowestFactorRating, 2f);
+                //print("AAA");
+            }
+            else //doing good
+            {
+                lowestFactorRating /= hitColliderNumber;
+                totalMoveRating *= Mathf.Pow(lowestFactorRating, 0.5f);
+                //print("BBB");
+            }
+
+            hasChangeColor = true;
+            GameObject markToChangeColor = null;
+            //print(hitColliderNumber + ", " + totalMoveRating);
+
+            if (moveIndex + 1 == 1)
+            {
+                markToChangeColor = gameManager.moveImgActive1;
+            }
+
+            else if (moveIndex + 1 == 2)
+            {
+                markToChangeColor = gameManager.moveImgActive2;
+            }
+
+            else if (moveIndex + 1 == 3)
+            {
+                markToChangeColor = gameManager.moveImgActive3;
+            }
+
+            markToChangeColor.GetComponent<Image>().color = Color.green;
+
+            if (totalMoveRating <= 0.85)
+            {
+                markToChangeColor.GetComponent<Image>().color = Color.yellow;
+            }
+
+            if (totalMoveRating <= 0.6)
+            {
+                markToChangeColor.GetComponent<Image>().color = Color.red;
+            }
         }
 
         if (Time.time > currentMoveTime + maxAllowTimingError && !hasSendScore && currentCutTime != -1 && currentMoveTime != 0)
         {
             hasSendScore = true;
             //print("MoveRating: " + moveIndex + ", " + totalMoveRating + ", Time: " + Time.time + ", move time:" + currentMoveTime);
+
+
             stanceRating.rating += totalMoveRating;
             //print("StanceRating: " + moveIndex + ", " + stanceRating.rating);
+            for (int i = 0; i < 5; i++)
+            {
+                if (i == 0)
+                {
+                    gameManager.roundScore[stanceRating.stanceIndex, moveIndex, i] = Mathf.RoundToInt(angleRating / totalColliderNumber * 100);
+                }
+
+                if (i == 1)
+                {
+                    gameManager.roundScore[stanceRating.stanceIndex, moveIndex, i] = Mathf.RoundToInt(forceRating / totalColliderNumber * 100);
+                }
+
+                if (i == 2)
+                {
+                    gameManager.roundScore[stanceRating.stanceIndex, moveIndex, i] = Mathf.RoundToInt(swingRating / totalColliderNumber * 100);
+                }
+
+                if (i == 3)
+                {
+                    gameManager.roundScore[stanceRating.stanceIndex, moveIndex, i] = Mathf.RoundToInt(displacementRating / totalColliderNumber * 100);
+                }
+
+                if (i == 4)
+                {
+                    gameManager.roundScore[stanceRating.stanceIndex, moveIndex, i] = Mathf.RoundToInt(timingRating * 100);
+                }
+
+            }
 
             if (moveIndex + 1 == stanceLogic.moveNumber && !stanceLogic.hasDisplayedRating)
             {
@@ -189,6 +270,36 @@ public class StartMove : MonoBehaviour
                 stanceRating.displayRating();
                 //print("Get Last Cut");
             }
+
+            //if(factorType == 0)
+            //{
+            //    stanceRating.performanceResponse.text = "Missed!";
+            //}
+
+            //else if (factorType == 1)
+            //{
+            //    stanceRating.performanceResponse.text = "Bad sword angle!";
+            //}
+
+            //else if(factorType == 2)
+            //{
+            //    stanceRating.performanceResponse.text = "Too weak!";
+            //}
+
+            //else if(factorType == 3)
+            //{
+            //    stanceRating.performanceResponse.text = "Swing not straight!";
+            //}
+
+            //else if(factorType == 4)
+            //{
+            //    stanceRating.performanceResponse.text = "Bad timing!";
+            //}
+
+            //else if(factorType == 5)
+            //{
+            //    stanceRating.performanceResponse.text = "Aim is not precise!";
+            //}
         }
     }
 }

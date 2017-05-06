@@ -40,8 +40,8 @@ public class InkDropLogic : MonoBehaviour
 
         if(markSprite != null && markSprite.color.a <= 0.05)
         {
-            Destroy(newMark);
             Destroy(gameObject);
+            Destroy(newMark);
         }
     }
 

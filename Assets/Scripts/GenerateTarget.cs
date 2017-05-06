@@ -10,12 +10,17 @@ public class GenerateTarget : MonoBehaviour
     public GameObject target;
     public Transform player;
     public Text scoreDisplay;
+    public GameScore gameManager;
+    public Text performanceResponse;
 
     public Quaternion shootDirection;
+    public int stanceIndex;
 	// Use this for initialization
 	void Start ()
     {
         StartCoroutine(createTarget(8f));
+        gameManager = FindObjectOfType<GameScore>();
+        stanceIndex = 0;
 	}
 	
 	// Update is called once per frame
@@ -24,22 +29,63 @@ public class GenerateTarget : MonoBehaviour
         transform.LookAt(player);
         shootDirection = transform.rotation;
         shootDirection.eulerAngles = new Vector3(0, shootDirection.eulerAngles.y, 0);
+
+        if(stanceIndex == 5)
+        {
+            StartCoroutine(wait());
+            GetComponent<GenerateTarget>().enabled = false;
+        }
 	}
+
+    IEnumerator wait()
+    {
+        yield return new WaitForSeconds(10);
+
+        gameManager.gameOver();
+    }
 
     IEnumerator createTarget(float interval)
     {
-        while (true)
+        while (true && stanceIndex < 5)
         {
             yield return new WaitForSeconds(5f);
 
             GameObject newTarget = Instantiate(target, transform.position, shootDirection);
             newTarget.GetComponent<StanceRating>().scoreDisplay = scoreDisplay;
+            newTarget.GetComponent<StanceRating>().performanceResponse = performanceResponse;
+            newTarget.GetComponent<StanceRating>().stanceIndex = stanceIndex;
             //newTarget.GetComponent<Rigidbody>().AddForce(newTarget.transform.forward * 3f, ForceMode.Impulse);
             Destroy(newTarget, 30f);
 
-            yield return new WaitForSeconds(interval);
+            yield return new WaitForSeconds(6.5f);
+            gameManager.lastStanceTime = Time.time;
+            gameManager.reset();
+
+            yield return new WaitForSeconds(interval - 5f);
+
+            stanceIndex++;
         }
+
+        //while (true && stanceIndex < 5)
+        //{
+        //    yield return new WaitForSeconds(5f);
+
+        //    GameObject newTarget = Instantiate(target, transform.position, shootDirection);
+        //    newTarget.GetComponent<StanceRating>().scoreDisplay = scoreDisplay;
+        //    newTarget.GetComponent<StanceRating>().performanceResponse = performanceResponse;
+        //    newTarget.GetComponent<StanceRating>().stanceIndex = stanceIndex;
+        //    //newTarget.GetComponent<Rigidbody>().AddForce(newTarget.transform.forward * 3f, ForceMode.Impulse);
+        //    Destroy(newTarget, 30f);
+
+
+        //    gameManager.lastStanceTime = Time.time;
+        //    gameManager.reset();
+
+
+        //    stanceIndex++;
+        //}
     }
+
 
     #region Better random number generator
 

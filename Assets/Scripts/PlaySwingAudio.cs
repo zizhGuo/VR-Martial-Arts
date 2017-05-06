@@ -10,29 +10,45 @@ public class PlaySwingAudio : MonoBehaviour
     public AudioClip[] audioClips;
     public Rigidbody rigidBody;
     public float minimumTriggerVelocity;
+    public float differentDirDotValue;
 
     public bool isAudioPlaying;
     public float lastPlayedTime;
     public AudioClip currentClip;
     public Vector3 velocity;
+    public Vector3 lastVelocity;
+    public float speed;
 
 	// Use this for initialization
 	void Start ()
     {
         isAudioPlaying = false;
+        lastVelocity = new Vector3(0, 0, 0);
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if (!isAudioPlaying && rigidBody.velocity.magnitude >= minimumTriggerVelocity)
-        { 
-            isAudioPlaying = true;
-            currentClip = audioClips[betterRandom(0, audioClips.Length - 1)];
+        velocity = rigidBody.velocity;
+        speed = rigidBody.velocity.magnitude;
 
-            audioSource.clip = currentClip;
-            audioSource.Play();
-            lastPlayedTime = Time.time;
+
+        if (rigidBody.velocity.magnitude >= minimumTriggerVelocity)
+        {
+            //print(Vector3.Dot(rigidBody.velocity.normalized, lastVelocity.normalized));
+
+            if (Vector3.Dot(rigidBody.velocity.normalized, lastVelocity.normalized) < differentDirDotValue || !isAudioPlaying)
+            {
+                print("DIFF" + Vector3.Dot(rigidBody.velocity.normalized, lastVelocity.normalized));
+
+                isAudioPlaying = true;
+                currentClip = audioClips[betterRandom(0, audioClips.Length - 1)];
+
+                audioSource.clip = currentClip;
+                audioSource.Play();
+                lastVelocity = rigidBody.velocity;
+                lastPlayedTime = Time.time;
+            }
         }
 
         if(isAudioPlaying && Time.time - lastPlayedTime >= currentClip.length)

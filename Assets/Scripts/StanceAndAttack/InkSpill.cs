@@ -11,15 +11,18 @@ public class InkSpill : MonoBehaviour
     public int maxVelocityDiff;
     public int maxAngleDiff;
     public GameObject inkDrop;
-    public Transform warriorPosition;
+    public GameObject warrior;
     public float destroyDelay;
     public float forceTuneDown;
+    public AudioClip[] audioClips;
+    public AudioSource audioSource;
 
     public bool isSpilled;
     public Vector3 cutForce;
     public Vector3 colPos;
     //public Vector3 cutDir;
     public Quaternion spillDir;
+    public AudioClip currentClip;
 
     // Use this for initialization
     void Start ()
@@ -47,13 +50,16 @@ public class InkSpill : MonoBehaviour
                 isSpilled = true;
 
                 //BladeLogic blade = coL.GetComponent<BladeLogic>();
-
+                currentClip = audioClips[betterRandom(0, audioClips.Length - 1)];
+                audioSource.clip = currentClip;
+                audioSource.Play();
                 //cutForce = blade.bladeVelocity / forceTuneDown;
 
                 cutForce = col.impulse / forceTuneDown;
                 cutForce.x += betterRandom(-maxAngleDiff, maxAngleDiff) / 100f;
                 cutForce.y += betterRandom(-maxAngleDiff, maxAngleDiff) / 100f;
                 cutForce.z += betterRandom(-maxAngleDiff, maxAngleDiff) / 100f;
+                //print(cutForce);
 
                 spillDir.SetLookRotation(col.impulse.normalized, Vector3.up);
 
@@ -63,7 +69,7 @@ public class InkSpill : MonoBehaviour
                     newDrop.GetComponent<Rigidbody>().AddForce(cutForce * (1f + (betterRandom(-maxVelocityDiff, maxVelocityDiff)) / 100f), ForceMode.Impulse);
                 }
 
-                //Destroy(warriorPosition.gameObject, 0.2f);
+                Destroy(warrior, 0.06f);
             }
         }
     }
